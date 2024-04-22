@@ -25,8 +25,20 @@ public class CustomerServiceimpl implements CustomerService {
     }
 
     @Override
-    public  Customer getCustomerByCustid(Integer Custid) {
+    public Customer getCustomerByCustid(Integer Custid) {
         return cust.getCustomerByCustid(Custid);
     }
 
+    @Override
+    public Integer deleteCustomerByCustid(Integer id) {
+        int i = cust.deleteCustomerByCustid(id);
+        System.out.println(i);
+        if (i == 1) {
+            return 1;
+        } else {
+            return 0;
+        }
+
+
+    }
 }

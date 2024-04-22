@@ -57,7 +57,7 @@ public class Account {
         this.transaction = transaction;
     }
 
-    @OneToMany(mappedBy = "account" )
+    @OneToMany(mappedBy = "account" ,cascade =CascadeType.REMOVE)
     @JsonManagedReference
     private List<Transaction> transaction;
 

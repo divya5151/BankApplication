@@ -19,7 +19,7 @@ public class Customer {
     private  String custpassword;
     private  String logindate;
     private  String logouttime;
-    @OneToOne(mappedBy = "customer",cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "customer",orphanRemoval = true)
     @JsonManagedReference
     private  Account account;
 

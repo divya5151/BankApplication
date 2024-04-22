@@ -4,11 +4,9 @@ import com.bank.bankserver.entities.BankDetails;
 import com.bank.bankserver.entities.BankLocation;
 import com.bank.bankserver.services.impl.BankDetailServiceImpl;
 import com.bank.bankserver.services.impl.BankLocationServiceImpl;
+import com.bank.bankserver.services.impl.CustomerServiceimpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Admin")
@@ -18,6 +16,8 @@ public class Admincontroller {
 
     @Autowired
     BankLocationServiceImpl banklocation;
+    @Autowired
+    CustomerServiceimpl custimpl;
 
     @PostMapping("/AddDetail")
     public BankDetails AddDetail(@RequestBody BankDetails b) {
@@ -28,5 +28,10 @@ public class Admincontroller {
     public BankLocation AddLocation(@RequestBody BankLocation l){
 
         return banklocation.AddBankLocation(l);
+    }
+    @DeleteMapping("/deleteuser/{CustId}")
+    public Integer deletecust(@PathVariable Integer CustId){
+
+        return custimpl.deleteCustomerByCustid(CustId);
     }
 }
