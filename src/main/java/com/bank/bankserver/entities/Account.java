@@ -29,9 +29,17 @@ public class Account {
     @OneToOne
     @JsonBackReference
     private Customer customer;
-    @OneToOne
+    @ManyToMany
     @JsonManagedReference
-    private  BankDetails bankdetails;
+    private  List<BankDetails> bankdetails;
+
+    public List<BankDetails> getBankdetails() {
+        return bankdetails;
+    }
+
+    public void setBankdetails(List<BankDetails> bankdetails) {
+        this.bankdetails = bankdetails;
+    }
 
     public Customer getCustomer() {
         return customer;
@@ -41,13 +49,6 @@ public class Account {
         this.customer = customer;
     }
 
-    public BankDetails getBankdetails() {
-        return bankdetails;
-    }
-
-    public void setBankdetails(BankDetails bankdetails) {
-        this.bankdetails = bankdetails;
-    }
 
     public List<Transaction> getTransaction() {
         return transaction;

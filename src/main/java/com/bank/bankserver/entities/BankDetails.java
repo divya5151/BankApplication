@@ -15,7 +15,10 @@ public class BankDetails {
     private String bankname;
     private String bankIFSC;
 
+/*
     @OneToOne(mappedBy = "bankdetails")
+*/
+    @Transient
     @JsonBackReference
     private Account account;
 
