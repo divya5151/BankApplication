@@ -19,6 +19,16 @@ public class Customer {
     private  String custpassword;
     private  String logindate;
     private  String logouttime;
+    private  boolean enable;
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
     @OneToOne(mappedBy = "customer",orphanRemoval = true)
     @JsonManagedReference
     private  Account account;

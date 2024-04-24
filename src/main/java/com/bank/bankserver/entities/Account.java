@@ -26,6 +26,16 @@ public class Account {
     }
 
     private float accountbalance;
+    private boolean enable;
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
     @OneToOne
     @JsonBackReference
     private Customer customer;

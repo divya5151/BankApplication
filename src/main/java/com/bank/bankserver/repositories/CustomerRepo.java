@@ -12,4 +12,6 @@ public interface CustomerRepo extends JpaRepository<Customer,Integer> {
     public Customer getCustomerByCustid(Integer id);
     @Transactional
     public Integer deleteCustomerByCustid(Integer id);
+    public Customer getCustomerByCustemailAndCustpassword(String email,String password);
+
 }

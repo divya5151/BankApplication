@@ -15,4 +15,9 @@ public class BankDetailServiceImpl implements BankDetailService {
     public BankDetails AddDetails(BankDetails b) {
         return bank.save(b);
     }
+
+    @Override
+    public BankDetails getBankDetailsByBranchid(Integer branchid) {
+        return bank.getBankDetailsByBranchid(branchid);
+    }
 }

@@ -1,5 +1,6 @@
 package com.bank.bankserver.controllers;
 
+import com.bank.bankserver.ServiceSecurity.Authentication;
 import com.bank.bankserver.entities.Account;
 import com.bank.bankserver.entities.Customer;
 import com.bank.bankserver.entities.Transaction;
@@ -18,9 +19,12 @@ public class UserController {
     CustomerServiceimpl custimpl;
     @Autowired
     AccountServiceImpl Accimpl;
-
+    @Autowired
+    public Authentication auth;
     @Autowired
     TransactionServiceImpl transimpl;
+    @Autowired
+    Authentication authentication;
 
     @PostMapping("/Addcust")
     public Customer add(@RequestBody Customer c){
@@ -29,13 +33,19 @@ public class UserController {
     }
     @PostMapping("/Addacc")
     public Account Addaccount(@RequestBody Account ac){
-
+        boolean b = authentication.authorized();
+        if (b){
         return Accimpl.AddAccount(ac);
+        }
+        return null;
     }
     @PostMapping("/AddTransaction")
     public Transaction add(@RequestBody Transaction t){
-
-        return transimpl.addTransaction(t);
+        boolean b = authentication.authorized();
+        if (b) {
+            return transimpl.addTransaction(t);
+        }
+        return  null;
     }
     @GetMapping("/getAccount/{Accountid}")
     public Account getAccount(@PathVariable Integer Accountid){
@@ -47,5 +57,16 @@ public class UserController {
         return custimpl.getCustomerByCustid(Custid) ;
     }
 
-   }
+    @PostMapping("/login")
+    public Customer getemailandpassword(@RequestBody Customer c) {
+
+        Customer cust = custimpl.getCustomerByCustemailAndCustpassword(c.getCustemail(), c.getCustpassword());
+        auth.setEmail(cust.getCustemail());
+        auth.setPassword(cust.getCustpassword());
+      return cust;
+
+    }
+
+
+}
 

@@ -24,30 +24,39 @@ public class TransactionServiceImpl implements Transactionservice {
 
     @Override
     public Transaction addTransaction(Transaction t) {
-        String date = LocalDate.now().toString();
-        String time = LocalTime.now().toString();
-        t.setTransactiondate(date);
-        t.setTransactiontime(time);
-        int accountId = t.getAccount().getAccountId();
-        Account a = Accrepo.getAccountByAccountId(accountId);
-        Float availableAmount = a.getAccountbalance();
-        if (t.getTransactionstatus() == TransactionStatus.Credited) {
-            float totalAmount = availableAmount + t.getTransactionAmount();
-            a.setAccountbalance(totalAmount);
-            Accrepo.save(a);
-            transrepo.save(t);
-        } else if (t.getTransactionstatus() == TransactionStatus.Debited) {
-            if(availableAmount>=t.getTransactionAmount()) {
+        int accountId1 = t.getAccount().getAccountId();
+        Account acc = Accrepo.getAccountByAccountId(accountId1);
+        
 
-
-                float totalAmount = availableAmount - t.getTransactionAmount();
+        if (acc.isEnable()) {
+            String time = LocalTime.now().toString();
+            String date = LocalDate.now().toString();
+            t.setTransactiontime(time);
+            t.setTransactiondate(date);
+            int accountId = t.getAccount().getAccountId();
+            Account a = Accrepo.getAccountByAccountId(accountId);
+            Float availableAmount = a.getAccountbalance();
+            if (t.getTransactionstatus() == TransactionStatus.Credited) {
+                float totalAmount = availableAmount + t.getTransactionAmount();
                 a.setAccountbalance(totalAmount);
                 Accrepo.save(a);
                 transrepo.save(t);
+            } else if (t.getTransactionstatus() == TransactionStatus.Debited) {
+                if (availableAmount >= t.getTransactionAmount()) {
+
+
+                    float totalAmount = availableAmount - t.getTransactionAmount();
+                    a.setAccountbalance(totalAmount);
+                    Accrepo.save(a);
+                    transrepo.save(t);
+                }
             }
-        }
 
             return t;
+
         }
+        return null;
+    }
+
     }
 

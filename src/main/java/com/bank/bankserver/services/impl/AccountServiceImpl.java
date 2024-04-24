@@ -13,6 +13,7 @@ public class AccountServiceImpl implements AccountService {
     AccountRepo acc;
     @Override
     public Account AddAccount(Account ac) {
+        ac.setEnable(false);
         return acc.save(ac);
     }
 
@@ -21,5 +22,17 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccountByAccountId(Integer Accountid) {
         return acc.getAccountByAccountId(Accountid);
+    }
+
+    @Override
+    public Account updateAccountByAccountId(Integer accountid) {
+        Account a=acc.getAccountByAccountId(accountid);
+        Account a1=new Account();
+        a1.setAccountId(a.getAccountId());
+        a1.setAccountNo(a.getAccountNo());
+        a1.setAccountbalance(a.getAccountbalance());
+        a1.setCustomer(a.getCustomer());
+        a1.setEnable(true);
+        return acc.save(a1);
     }
 }

@@ -1,5 +1,6 @@
 package com.bank.bankserver.services.impl;
 
+import com.bank.bankserver.ServiceSecurity.Authentication;
 import com.bank.bankserver.entities.Customer;
 import com.bank.bankserver.repositories.CustomerRepo;
 import com.bank.bankserver.services.CustomerService;
@@ -17,6 +18,7 @@ public class CustomerServiceimpl implements CustomerService {
 
     @Override
     public Customer AddCustomer(Customer c) {
+        c.setEnable(false);
         String date = LocalDate.now().toString();
         String time = LocalTime.now().toString();
         c.setLogindate(date);
@@ -41,4 +43,32 @@ public class CustomerServiceimpl implements CustomerService {
 
 
     }
+
+    @Override
+    public Customer getCustomerByCustemailAndCustpassword(String email, String password) {
+        Customer cust1 = cust.getCustomerByCustemailAndCustpassword(email, password);
+        if (cust1.isEnable()){
+        return  cust1;
+        }
+        return null;
+    }
+
+    @Override
+    public Customer updateCust(Integer custid) {
+        Customer c=cust.getCustomerByCustid(custid);
+        Customer c1=new Customer();
+        c1.setCustid(c.getCustid());
+        c1.setCustname(c.getCustname());
+        c1.setCustemail(c.getCustemail());
+        c1.setCustpassword(c.getCustpassword());
+        c1.setCustcontact(c.getCustcontact());
+        c1.setLogindate(c.getLogindate());
+        c1.setLogouttime(c.getLogouttime());
+        c1.setEnable(true);
+
+
+        return cust.save(c1);
+    }
+
+
 }

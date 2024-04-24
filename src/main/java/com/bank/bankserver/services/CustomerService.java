@@ -10,4 +10,6 @@ public interface CustomerService {
     public Customer getCustomerByCustid(Integer Custid);
 
     public Integer deleteCustomerByCustid(Integer id);
+    public Customer getCustomerByCustemailAndCustpassword(String email,String password);
+    public  Customer updateCust(Integer custid);
 }
