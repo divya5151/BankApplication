@@ -58,5 +58,10 @@ public class TransactionServiceImpl implements Transactionservice {
         return null;
     }
 
+    @Override
+    public Transaction getTransactionByTransactionid(Integer transactionid) {
+        return transrepo.getTransactionByTransactionid(transactionid) ;
     }
+
+}
 

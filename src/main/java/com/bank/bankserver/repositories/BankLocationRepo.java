@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BankLocationRepo extends JpaRepository<BankLocation,Integer> {
+    public BankLocation getBankLocationByBanklocationid(Integer banklocationid);
 
 }

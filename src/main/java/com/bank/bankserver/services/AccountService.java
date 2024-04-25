@@ -6,4 +6,5 @@ public interface AccountService {
     public Account AddAccount(Account ac);
     public Account getAccountByAccountId(Integer Accountid);
     public Account updateAccountByAccountId(Integer Accountid);
+    public Account getAccountByAccountNo(Long AccountNo);
 }

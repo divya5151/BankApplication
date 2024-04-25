@@ -47,16 +47,16 @@ public class CustomerServiceimpl implements CustomerService {
     @Override
     public Customer getCustomerByCustemailAndCustpassword(String email, String password) {
         Customer cust1 = cust.getCustomerByCustemailAndCustpassword(email, password);
-        if (cust1.isEnable()){
-        return  cust1;
+        if (cust1.isEnable()) {
+            return cust1;
         }
         return null;
     }
 
     @Override
     public Customer updateCust(Integer custid) {
-        Customer c=cust.getCustomerByCustid(custid);
-        Customer c1=new Customer();
+        Customer c = cust.getCustomerByCustid(custid);
+        Customer c1 = new Customer();
         c1.setCustid(c.getCustid());
         c1.setCustname(c.getCustname());
         c1.setCustemail(c.getCustemail());
@@ -70,5 +70,14 @@ public class CustomerServiceimpl implements CustomerService {
         return cust.save(c1);
     }
 
-
+    @Override
+    public Customer updateCustomer(Customer c) {
+        int custid = c.getCustid();
+        Customer c1=cust.getCustomerByCustid(custid);
+        c1.setCustname(c.getCustname());
+        c1.setCustcontact(c.getCustcontact());
+        c1.setCustemail(c.getCustemail());
+        c1.setCustpassword(c.getCustpassword());
+        return cust.save(c1);
+        }
 }

@@ -12,4 +12,6 @@ public interface CustomerService {
     public Integer deleteCustomerByCustid(Integer id);
     public Customer getCustomerByCustemailAndCustpassword(String email,String password);
     public  Customer updateCust(Integer custid);
+
+    public Customer updateCustomer(Customer c);
 }

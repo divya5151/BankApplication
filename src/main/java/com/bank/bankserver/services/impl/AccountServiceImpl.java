@@ -35,4 +35,9 @@ public class AccountServiceImpl implements AccountService {
         a1.setEnable(true);
         return acc.save(a1);
     }
+
+    @Override
+    public Account getAccountByAccountNo(Long AccountNo) {
+        return acc.getAccountByAccountNo(AccountNo);
+    }
 }

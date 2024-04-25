@@ -15,4 +15,14 @@ public class BankLocationServiceImpl implements BankLocationService {
     public BankLocation AddBankLocation(BankLocation l) {
         return location.save(l);
     }
+
+    @Override
+    public BankLocation updatelocation(BankLocation l) {
+        return location.save(l);
+    }
+
+    @Override
+    public BankLocation getBankLocationByBanklocationid(Integer banklocationid) {
+        return location.getBankLocationByBanklocationid(banklocationid);
+    }
 }

@@ -7,4 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public interface BankLocationService {
 
     public BankLocation AddBankLocation(BankLocation l);
+    public BankLocation updatelocation(BankLocation l);
+    public BankLocation getBankLocationByBanklocationid(Integer banklocationid);
 }
+
