@@ -30,9 +30,12 @@ public class Admincontroller {
     AccountServiceImpl accimpl;
 
     @PostMapping("/AddDetail")
-    public BankDetails AddDetail(@RequestBody BankDetails b) {
+    public ResponseEntity<BankDetails> AddDetail(@RequestBody BankDetails b) {
 
-        return bankdetail.AddDetails(b);    }
+        BankDetails bankDetails = bankdetail.AddDetails(b);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(bankDetails);
+    }
 
     @PostMapping("/AddLocation")
     public BankLocation AddLocation(@RequestBody BankLocation l){

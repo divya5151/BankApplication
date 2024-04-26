@@ -17,6 +17,14 @@ public class BankLocation {
    @JsonBackReference
     private BankDetails bankdetails;
 
+    public BankDetails getBankdetails() {
+        return bankdetails;
+    }
+
+    public void setBankdetails(BankDetails bankdetails) {
+        this.bankdetails = bankdetails;
+    }
+
     public int getBanklocationid() {
         return banklocationid;
     }

@@ -1,9 +1,12 @@
 package com.bank.bankserver.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -15,12 +18,22 @@ public class BankDetails {
     private String bankname;
     private String bankIFSC;
 
+
+    /*@OneToOne(mappedBy = "bankdetails")*/
 /*
-    @OneToOne(mappedBy = "bankdetails")
+   @Transient
 */
-    @Transient
-    @JsonBackReference
-    private Account account;
+    @OneToMany(mappedBy = "bankdetails")
+    @JsonIgnore
+    private List<Account> account;
+
+    public List<Account> getAccount() {
+        return account;
+    }
+
+    public void setAccount(List<Account> account) {
+        this.account = account;
+    }
 
     @OneToOne(mappedBy = "bankdetails")
     @JsonManagedReference
@@ -29,13 +42,7 @@ public class BankDetails {
         return branchid;
     }
 
-    public Account getAccount() {
-        return account;
-    }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
 
     public BankLocation getBancklocation() {
         return bancklocation;

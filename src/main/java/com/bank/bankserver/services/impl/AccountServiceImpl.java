@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 public class AccountServiceImpl implements AccountService {
     @Autowired
     AccountRepo acc;
+
+
     @Override
     public Account AddAccount(Account ac) {
         ac.setEnable(false);
@@ -39,5 +41,16 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccountByAccountNo(Long AccountNo) {
         return acc.getAccountByAccountNo(AccountNo);
+    }
+
+    @Override
+    public Account updateAccount(Account a) {
+        int accountid=a.getAccountId();
+        Account a1=acc.getAccountByAccountId(accountid);
+        a1.setAccountId(a.getAccountId());
+        a1.setAccountNo(a.getAccountNo());
+        a1.setAccountbalance(a.getAccountbalance());
+        a1.setCustomer(a.getCustomer());
+        return acc.save(a);
     }
 }

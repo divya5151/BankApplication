@@ -39,15 +39,22 @@ public class Account {
     @OneToOne
     @JsonBackReference
     private Customer customer;
-    @ManyToMany
-    @JsonManagedReference
-    private  List<BankDetails> bankdetails;
 
-    public List<BankDetails> getBankdetails() {
+
+
+/*
+    @ManyToOne
+*/
+    /*@ManyToMany*/
+    @ManyToOne
+//    @JsonManagedReference
+    private BankDetails bankdetails;
+
+    public BankDetails getBankdetails() {
         return bankdetails;
     }
 
-    public void setBankdetails(List<BankDetails> bankdetails) {
+    public void setBankdetails(BankDetails bankdetails) {
         this.bankdetails = bankdetails;
     }
 

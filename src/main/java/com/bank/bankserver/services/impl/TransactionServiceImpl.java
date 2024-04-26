@@ -1,11 +1,14 @@
 package com.bank.bankserver.services.impl;
 
 import com.bank.bankserver.entities.Account;
+import com.bank.bankserver.entities.Customer;
 import com.bank.bankserver.entities.Transaction;
 import com.bank.bankserver.entities.TransactionStatus;
 import com.bank.bankserver.repositories.AccountRepo;
+import com.bank.bankserver.repositories.CustomerRepo;
 import com.bank.bankserver.repositories.TransactionRepo;
 import com.bank.bankserver.services.Transactionservice;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,13 @@ public class TransactionServiceImpl implements Transactionservice {
     AccountRepo Accrepo;
 
     TransactionStatus ts;
+    @Autowired
+    HttpSession session;
+    @Autowired
+    EmailServiceImpl email;
+    @Autowired
+    CustomerRepo cust;
+
 
     @Override
     public Transaction addTransaction(Transaction t) {
@@ -39,6 +49,7 @@ public class TransactionServiceImpl implements Transactionservice {
             if (t.getTransactionstatus() == TransactionStatus.Credited) {
                 float totalAmount = availableAmount + t.getTransactionAmount();
                 a.setAccountbalance(totalAmount);
+
                 Accrepo.save(a);
                 transrepo.save(t);
             } else if (t.getTransactionstatus() == TransactionStatus.Debited) {
@@ -47,8 +58,15 @@ public class TransactionServiceImpl implements Transactionservice {
 
                     float totalAmount = availableAmount - t.getTransactionAmount();
                     a.setAccountbalance(totalAmount);
-                    Accrepo.save(a);
-                    transrepo.save(t);
+                    session.setAttribute("a",a);
+                    session.setAttribute("t",t);
+                    System.out.println("sending otp");
+                    Integer custid = a.getCustomer().getCustid();
+                    Customer customerByCustid = cust.getCustomerByCustid(custid);
+
+                    email.sendOtp(customerByCustid.getCustemail());
+//                   /* Accrepo.save(a);
+//                    transrepo.save(t);*/
                 }
             }
 
@@ -61,6 +79,19 @@ public class TransactionServiceImpl implements Transactionservice {
     @Override
     public Transaction getTransactionByTransactionid(Integer transactionid) {
         return transrepo.getTransactionByTransactionid(transactionid) ;
+    }
+
+    @Override
+    public boolean verifyOtp(String otp) {
+       Account acc = (Account) session.getAttribute("a");
+        Transaction tr =(Transaction) session.getAttribute("t");
+        boolean verifyotp = email.verifyotp1(otp);
+        if(verifyotp){
+            Accrepo.save(acc);
+            transrepo.save(tr);
+            return true;
+        }
+        return false;
     }
 
 }

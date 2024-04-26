@@ -3,9 +3,11 @@ package com.bank.bankserver.controllers;
 import com.bank.bankserver.ServiceSecurity.Authentication;
 import com.bank.bankserver.entities.Account;
 import com.bank.bankserver.entities.Customer;
+import com.bank.bankserver.entities.Otp;
 import com.bank.bankserver.entities.Transaction;
 import com.bank.bankserver.services.impl.AccountServiceImpl;
 import com.bank.bankserver.services.impl.CustomerServiceimpl;
+import com.bank.bankserver.services.impl.EmailServiceImpl;
 import com.bank.bankserver.services.impl.TransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,56 +29,69 @@ public class UserController {
     TransactionServiceImpl transimpl;
     @Autowired
     Authentication authentication;
+    @Autowired
+    EmailServiceImpl emailimpl;
 
     @PostMapping("/Addcust")
-    public Customer add(@RequestBody Customer c) {
+    public ResponseEntity<Customer> add(@RequestBody Customer c) {
 
-        return custimpl.AddCustomer(c);
+        Customer customer = custimpl.AddCustomer(c);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(customer);
     }
 
     @PostMapping("/Addacc")
-    public Account Addaccount(@RequestBody Account ac) {
+    public ResponseEntity<Account> Addaccount(@RequestBody Account ac) {
         boolean b = authentication.authorized();
         if (b) {
-            return Accimpl.AddAccount(ac);
+            Account account = Accimpl.AddAccount(ac);
+            return ResponseEntity.status(HttpStatus.CREATED).body(account);
         }
         return null;
     }
 
     @PostMapping("/AddTransaction")
-    public Transaction add(@RequestBody Transaction t) {
+    public ResponseEntity<Transaction> add(@RequestBody Transaction t) {
         boolean b = authentication.authorized();
         if (b) {
-            return transimpl.addTransaction(t);
+            Transaction transaction = transimpl.addTransaction(t);
+            return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
         }
         return null;
     }
 
+    @PostMapping("/verifyotp")
+    public void verify(@RequestBody String otp) {
+        emailimpl.verifyotp1(otp);
+    }
+
     @GetMapping("/getAccount/{Accountid}")
-    public Account getAccount(@PathVariable Integer Accountid) {
+    public ResponseEntity<Account> getAccount(@PathVariable Integer Accountid) {
         boolean b = authentication.authorized();
         if (b) {
-            return Accimpl.getAccountByAccountId(Accountid);
+            Account accountByAccountId = Accimpl.getAccountByAccountId(Accountid);
+            return ResponseEntity.status(HttpStatus.CREATED).body(accountByAccountId);
         }
         return null;
     }
 
     @GetMapping("/getcustomer/{Custid}")
-    public Customer getcust(@PathVariable Integer Custid) {
+    public ResponseEntity<Customer> getcust(@PathVariable Integer Custid) {
         boolean b = authentication.authorized();
         if (b) {
-            return custimpl.getCustomerByCustid(Custid);
+            Customer customerByCustid = custimpl.getCustomerByCustid(Custid);
+            return ResponseEntity.status(HttpStatus.CREATED).body(customerByCustid);
         }
         return null;
     }
 
     @PostMapping("/login")
-    public Customer getemailandpassword(@RequestBody Customer c) {
+    public ResponseEntity<Customer> getemailandpassword(@RequestBody Customer c) {
 
         Customer cust = custimpl.getCustomerByCustemailAndCustpassword(c.getCustemail(), c.getCustpassword());
         auth.setEmail(cust.getCustemail());
         auth.setPassword(cust.getCustpassword());
-        return cust;
+        return ResponseEntity.status(HttpStatus.CREATED).body(cust);
 
     }
 
@@ -99,5 +114,25 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CREATED).body(c1);
         }
         return null;
+    }
+
+    @PutMapping("/updateAccount")
+    public ResponseEntity<Account> updatecust(@RequestBody Account a) {
+        boolean b = authentication.authorized();
+        if (b) {
+            Account a1 = Accimpl.updateAccount(a);
+            return ResponseEntity.status(HttpStatus.CREATED).body(a1);
+        }
+        return null;
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyotp(@RequestBody Otp otp) {
+        System.out.println("my otp"+otp.getOtp());
+        boolean b = transimpl.verifyOtp(otp.getOtp());
+        if (b) {
+            return ResponseEntity.ok("verified successfully");
+        }
+        return ResponseEntity.ok("verified successfully");
     }
 }
